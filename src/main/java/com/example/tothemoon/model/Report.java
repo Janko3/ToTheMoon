@@ -9,25 +9,29 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reaction {
+public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "type",nullable = false)
+    @Column(name = "reason",nullable = false)
     @Enumerated(EnumType.STRING)
-    private EReactionType type;
-    @Column(name = "timestamp")
+    private EReportReason reason;
+    @Column(name = "timestamp",nullable = false)
     private LocalDate timestamp;
-    @Column(name = "deleted")
+    @ManyToOne
+    private User byUser;
+    @Column(name = "accepted",nullable = false)
+    private boolean accepted;
+
+    @Column(name = "deleted",nullable = false)
     private boolean isDeleted;
     @ManyToOne
-    private User user;
+    private Post post;
     @ManyToOne
     private Comment comment;
-    @ManyToOne
-    private Post post;
+
 }

@@ -32,16 +32,23 @@ public class User {
     private String lastName;
     @Column(name = "profileImagePath")
     private String profileImagePath;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
     private Set<User>friends = new HashSet<>();
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
     private Set<Post>posts = new HashSet<>();
     @Column(name = "blocked",nullable = false)
     private boolean isBlocked;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
     private Set<Comment>comments = new HashSet<>();
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
     private Set<Reaction>reactions = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
+    private Set<Report>reports = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
+    private Set<FriendRequest>receivedRequests = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
+    private Set<FriendRequest>sentRequests = new HashSet<>();
+
 
 
 }

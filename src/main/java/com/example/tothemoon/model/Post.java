@@ -31,9 +31,12 @@ public class Post {
     private User user;
     @Column(name = "deleted",nullable = false)
     private boolean isDeleted;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "post")
     private Set<Comment>comments = new HashSet<>();
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "post")
     private Set<Reaction> reactions = new HashSet<>();
-
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "post")
+    private Set<Report> reports = new HashSet<>();
+    @ManyToOne
+    private Group group;
 }

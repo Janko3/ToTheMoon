@@ -33,5 +33,7 @@ public class Comment {
     private Post post;
     @OneToMany
     private Set<Reaction> reactions = new HashSet<>();
+    @OneToMany
+    private Set<Report> reports = new HashSet<>();
 
 }
