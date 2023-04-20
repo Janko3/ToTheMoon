@@ -12,10 +12,11 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "reaction")
 public class Reaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
     @Column(name = "type",nullable = false)
     @Enumerated(EnumType.STRING)
@@ -24,10 +25,13 @@ public class Reaction {
     private LocalDate timestamp;
     @Column(name = "deleted")
     private boolean isDeleted;
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     @ManyToOne
     private User user;
+    @JoinColumn(name = "comment_id",referencedColumnName = "id")
     @ManyToOne
     private Comment comment;
+    @JoinColumn(name = "post_id",referencedColumnName = "id")
     @ManyToOne
     private Post post;
 }

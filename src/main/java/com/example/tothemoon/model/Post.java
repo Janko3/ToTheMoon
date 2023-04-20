@@ -14,10 +14,11 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "post")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
     @Column(name = "content",nullable = false)
     private String content;
@@ -37,6 +38,7 @@ public class Post {
     private Set<Reaction> reactions = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "post")
     private Set<Report> reports = new HashSet<>();
+    @JoinColumn(name = "group_id",referencedColumnName = "id")
     @ManyToOne
     private Group group;
 }

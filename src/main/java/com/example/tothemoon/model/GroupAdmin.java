@@ -12,8 +12,8 @@ import java.util.Set;
 @Entity
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "group_admin")
 public class GroupAdmin {
     @Id
     @ManyToOne

@@ -7,21 +7,25 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "report")
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
     @Column(name = "reason",nullable = false)
     @Enumerated(EnumType.STRING)
     private EReportReason reason;
     @Column(name = "timestamp",nullable = false)
-    private LocalDate timestamp;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     @ManyToOne
     private User byUser;
     @Column(name = "accepted",nullable = false)
@@ -29,8 +33,10 @@ public class Report {
 
     @Column(name = "deleted",nullable = false)
     private boolean isDeleted;
+    @JoinColumn(name = "post_id",referencedColumnName = "id")
     @ManyToOne
     private Post post;
+    @JoinColumn(name = "comment_id",referencedColumnName = "id")
     @ManyToOne
     private Comment comment;
 

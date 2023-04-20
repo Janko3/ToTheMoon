@@ -12,10 +12,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "group_request")
 public class GroupRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
     @Column(name = "approved")
     private boolean approved;
@@ -23,8 +24,10 @@ public class GroupRequest {
     private LocalDateTime createdAt;
     @Column(name = "at")
     private LocalDateTime at;
+    @JoinColumn(name = "group_id",referencedColumnName = "id")
     @ManyToOne
     private Group group;
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     @ManyToOne
     private User user;
 }
