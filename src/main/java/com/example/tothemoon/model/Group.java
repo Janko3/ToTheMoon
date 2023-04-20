@@ -30,5 +30,8 @@ public class Group {
     private String suspendedReason;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "group")
     private Set<Post>posts = new HashSet<>();
-
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "group")
+    private Set<GroupRequest>requests = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "group")
+    private Set<Banned>forGroup = new HashSet<>();
 }

@@ -48,7 +48,11 @@ public class User {
     private Set<FriendRequest>receivedRequests = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
     private Set<FriendRequest>sentRequests = new HashSet<>();
-
-
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
+    private Set<GroupRequest> requests = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
+    private Set<GroupAdmin>admins = new HashSet<>();
+    @OneToMany(fetch =  FetchType.LAZY,mappedBy = "user")
+    private Set<Banned>towards = new HashSet<>();
 
 }
