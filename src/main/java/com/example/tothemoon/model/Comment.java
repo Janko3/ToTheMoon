@@ -26,7 +26,7 @@ public class Comment {
     private LocalDate timestamp;
     @Column(name = "deleted",nullable = false)
     private boolean isDeleted;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "comment")
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Comment> replies = new HashSet<>();
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     @ManyToOne

@@ -14,4 +14,5 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name = "admin")
 public class Admin extends User{
+
 }

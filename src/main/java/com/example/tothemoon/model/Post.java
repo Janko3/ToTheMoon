@@ -32,11 +32,11 @@ public class Post {
     private User user;
     @Column(name = "deleted",nullable = false)
     private boolean isDeleted;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "post")
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Comment>comments = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "post")
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Reaction> reactions = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "post")
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Report> reports = new HashSet<>();
     @JoinColumn(name = "group_id",referencedColumnName = "id")
     @ManyToOne

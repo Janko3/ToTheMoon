@@ -1,4 +1,4 @@
-package com.example.tothemoon.model;
+package com.example.tothemoon.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

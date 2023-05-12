@@ -16,8 +16,11 @@ import java.util.Set;
 @Table(name = "group_admin")
 public class GroupAdmin {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
     @ManyToOne
     private User user;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "group_admin")
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Banned> by = new HashSet<>();
 }

@@ -1,6 +1,6 @@
 package com.example.tothemoon.model;
 
-import lombok.AllArgsConstructor;
+import com.example.tothemoon.model.enums.EReactionType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
