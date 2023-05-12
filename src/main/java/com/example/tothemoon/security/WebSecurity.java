@@ -3,7 +3,6 @@ package com.example.tothemoon.security;
 import com.example.tothemoon.model.User;
 import com.example.tothemoon.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
