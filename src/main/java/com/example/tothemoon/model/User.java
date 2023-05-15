@@ -29,7 +29,7 @@ public class User {
     private String password;
     @Column(name = "email",nullable = false)
     private String email;
-    @Column(name = "last_login",nullable = false)
+    @Column(name = "last_login")
     private LocalDateTime lastLogin;
     @Column(name = "first_name",nullable = false)
     private String firstName;
@@ -37,14 +37,14 @@ public class User {
     private String lastName;
     @Column(name = "profileImagePath")
     private String profileImagePath;
-    @Column(name = "role",nullable = false)
+    @Column(name = "role")
     private EUserType role;
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<User>friends = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Post>posts = new HashSet<>();
-    @Column(name = "blocked",nullable = false)
-    private boolean isBlocked;
+    @Column(name = "blocked")
+    private Boolean isBlocked;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "id")
     private Set<Comment>comments = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY)

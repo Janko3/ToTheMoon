@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "admin")
 public class Admin extends User{
 
 }

@@ -63,8 +63,8 @@ public class WebSecurityConfig {
         http.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint);
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/users/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/users/signup").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/clubs/{id}/**").access("@webSecurity.checkClubId(authentication,request,#id)")
+                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+
 
                 .anyRequest().authenticated().and()
 
