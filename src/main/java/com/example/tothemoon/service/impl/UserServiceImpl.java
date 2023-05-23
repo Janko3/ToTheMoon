@@ -2,6 +2,7 @@ package com.example.tothemoon.service.impl;
 
 import com.example.tothemoon.model.User;
 import com.example.tothemoon.model.dto.RegisterDTO;
+import com.example.tothemoon.model.enums.EUserType;
 import com.example.tothemoon.repository.UserRepository;
 import com.example.tothemoon.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +36,26 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         User newUser = new User();
+        newUser.setId(registerDTO.getId());
         newUser.setUsername(registerDTO.getUsername());
         newUser.setEmail(registerDTO.getEmail());
         newUser.setFirstName(registerDTO.getFirstName());
         newUser.setLastName(registerDTO.getLastName());
         newUser.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        newUser.setRole(EUserType.USER);
         newUser = userRepository.save(newUser);
         return newUser;
     }
     @Override
     public List<User>findAll(){
         return this.userRepository.findAll();
+    }
+    @Override
+    public User findById(int id){
+       Optional<User> user = userRepository.findById(id);
+       if(!user.isPresent()){
+           return null;
+       }
+       return user.get();
     }
 }

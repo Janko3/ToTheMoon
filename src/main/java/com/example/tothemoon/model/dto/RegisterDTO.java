@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class RegisterDTO {
+    private Integer id;
     @NotNull
     private String username;
     @NotNull

@@ -24,10 +24,8 @@ public class Post {
     private String content;
     @Column(name = "creation_date",nullable = false)
     private LocalDateTime creationDate;
-    @ElementCollection
-    @CollectionTable(name = "post_image_paths",joinColumns = @JoinColumn(name = "post_id"))
-    @Column(name = "image_paths")
-    private Set<String> imagePaths = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY)
+    private Set<Image> images = new HashSet<>();
     @ManyToOne
     private User user;
     @Column(name = "deleted",nullable = false)

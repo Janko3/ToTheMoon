@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -29,14 +31,17 @@ public class User {
     private String password;
     @Column(name = "email",nullable = false)
     private String email;
+    @OneToOne(fetch=FetchType.EAGER, orphanRemoval = true, cascade = { javax.persistence.CascadeType.ALL })
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name="image_id")
+    private Image profileImage;
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
     @Column(name = "first_name",nullable = false)
     private String firstName;
     @Column(name = "last_name",nullable = false)
     private String lastName;
-    @Column(name = "profileImagePath")
-    private String profileImagePath;
+
     @Column(name = "role")
     private EUserType role;
     @ManyToMany(fetch = FetchType.LAZY)

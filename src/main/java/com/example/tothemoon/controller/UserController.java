@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
@@ -65,7 +66,6 @@ public class UserController {
     }
 
     @GetMapping("/whoami")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public User user(Principal user) {
         return this.userService.findByEmail(user.getName());
     }

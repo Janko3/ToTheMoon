@@ -9,4 +9,5 @@ public interface UserService {
     User findByEmail(String email);
     User createUser(RegisterDTO registerDTO);
     List<User> findAll();
+    User findById(int id);
 }
