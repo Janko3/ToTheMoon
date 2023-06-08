@@ -1,6 +1,7 @@
 package com.example.tothemoon.service.impl;
 
 import com.example.tothemoon.model.User;
+import com.example.tothemoon.model.dto.UserDTO;
 import com.example.tothemoon.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,8 +20,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserService userService;
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userService.findByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userService.findUserByUsername(username);
         if(user == null){
             throw new UsernameNotFoundException("No user with this email found ");
         }else {
@@ -28,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             String role = "ROLE_" + user.getRole().toString();
             grantedAuthorities.add(new SimpleGrantedAuthority(role));
 
-            return new org.springframework.security.core.userdetails.User (user.getEmail().trim(),
+            return new org.springframework.security.core.userdetails.User (user.getUsername().trim(),
                     user.getPassword().trim(),
                     grantedAuthorities);
 

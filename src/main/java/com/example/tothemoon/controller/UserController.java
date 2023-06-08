@@ -1,9 +1,7 @@
 package com.example.tothemoon.controller;
 
 import com.example.tothemoon.model.User;
-import com.example.tothemoon.model.dto.JwtAuthenticationRequest;
-import com.example.tothemoon.model.dto.RegisterDTO;
-import com.example.tothemoon.model.dto.UserTokenState;
+import com.example.tothemoon.model.dto.*;
 import com.example.tothemoon.security.TokenUtils;
 import com.example.tothemoon.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +26,23 @@ import java.util.List;
 @RestController
 @RequestMapping("api/users")
 public class UserController {
-    @Autowired
     UserService userService;
-    @Autowired
+
     UserDetailsService userDetailsService;
-    @Autowired
+
     AuthenticationManager authenticationManager;
-    @Autowired
+
     TokenUtils tokenUtils;
+
+    @Autowired
+    public UserController(UserService userService,UserDetailsService userDetailsService,
+                          AuthenticationManager authenticationManager,
+                          TokenUtils tokenUtils){
+        this.userService= userService;
+        this.userDetailsService = userDetailsService;
+        this.authenticationManager = authenticationManager;
+        this.tokenUtils = tokenUtils;
+    }
 
     @PostMapping()
     public ResponseEntity<RegisterDTO>create(@RequestBody @Validated RegisterDTO newUser){
@@ -50,8 +57,8 @@ public class UserController {
         return new ResponseEntity<>(registerDTO,HttpStatus.CREATED);
     }
     @PostMapping("/login")
-    public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),authenticationRequest.getPassword()));
+    public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody LoginDTO loginDTO, HttpServletResponse response){
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),loginDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(userDetails);
@@ -61,13 +68,14 @@ public class UserController {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<User> loadAll() {
+    public List<UserDTO> loadAll() {
         return this.userService.findAll();
     }
 
     @GetMapping("/whoami")
-    public User user(Principal user) {
-        return this.userService.findByEmail(user.getName());
+    public UserDTO loggedUser(Principal user) {
+        System.out.println(user);
+        return this.userService.findByUsername(user.getName());
     }
 
 }

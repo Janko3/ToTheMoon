@@ -3,6 +3,7 @@ package com.example.tothemoon.service.impl;
 import com.example.tothemoon.model.Post;
 import com.example.tothemoon.model.User;
 import com.example.tothemoon.model.dto.NewPostDTO;
+import com.example.tothemoon.model.dto.UserDTO;
 import com.example.tothemoon.repository.PostRepository;
 import com.example.tothemoon.service.PostService;
 import com.example.tothemoon.service.UserService;
@@ -32,15 +33,16 @@ public class PostServiceImpl implements PostService {
         this.modelMapper = modelMapper;
     }
     @Override
-    public NewPostDTO createPost(NewPostDTO newPostDTO){
-        Post newPost = modelMapper.map(newPostDTO,Post.class);
+    public Post createPost(NewPostDTO newPostDTO){
+        Post newPost = new Post();
         newPost.setCreationDate(LocalDateTime.now());
+        newPost.setContent(newPost.getContent());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        User user = this.userService.findByEmail(email);
-        newPost.setUser(user);
+        String username = auth.getName();
+        UserDTO userDTO = userService.findByUsername(username);
+        newPost.setUser(modelMapper.map(userDTO,User.class));
         postRepository.save(newPost);
-        return modelMapper.map(newPost, NewPostDTO.class);
+        return newPost;
     }
     @Override
     public List<NewPostDTO> findAll() {

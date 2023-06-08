@@ -12,12 +12,12 @@ import lombok.Setter;
 public class LoginDTO {
     private int id;
     @NotNull
-    private String email;
+    private String username;
     @NotNull
     private String password;
 
     public LoginDTO(User createdUser){
         this.id = createdUser.getId();
-        this.email = createdUser.getEmail();
+        this.username = createdUser.getUsername();
     }
 }

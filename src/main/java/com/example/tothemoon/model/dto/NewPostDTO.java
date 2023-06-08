@@ -20,6 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class NewPostDTO {
     private Integer id;
+    private UserDTO userDTO;
     private String content;
     private Set<Image> images;
     private LocalDateTime creationDate;

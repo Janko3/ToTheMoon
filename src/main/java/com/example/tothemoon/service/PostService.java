@@ -7,7 +7,7 @@ import com.example.tothemoon.model.dto.NewPostDTO;
 import java.util.List;
 
 public interface PostService {
-    NewPostDTO createPost(NewPostDTO newPostDTO);
+    Post createPost(NewPostDTO newPostDTO);
     NewPostDTO deletePost(int id);
     NewPostDTO updatePost(NewPostDTO newPostDTO);
     List<NewPostDTO> findAll();

@@ -1,5 +1,6 @@
 package com.example.tothemoon.controller;
 
+import com.example.tothemoon.model.Post;
 import com.example.tothemoon.model.dto.NewPostDTO;
 import com.example.tothemoon.service.PostService;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class PostController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<NewPostDTO>create(@RequestBody NewPostDTO newPostDTO){
+    public ResponseEntity<Post>create(@RequestBody NewPostDTO newPostDTO){
         return new ResponseEntity<>(this.postService.createPost(newPostDTO), HttpStatus.OK);
     }
     @GetMapping
