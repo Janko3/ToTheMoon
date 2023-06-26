@@ -20,15 +20,15 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "content",nullable = false)
+    @Column(name = "content")
     private String content;
-    @Column(name = "creation_date",nullable = false)
+    @Column(name = "creation_date")
     private LocalDateTime creationDate;
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Image> images = new HashSet<>();
     @ManyToOne
     private User user;
-    @Column(name = "deleted",nullable = false)
+    @Column(name = "deleted")
     private boolean isDeleted;
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Comment>comments = new HashSet<>();
