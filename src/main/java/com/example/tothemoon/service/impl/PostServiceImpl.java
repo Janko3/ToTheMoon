@@ -14,7 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.events.Event;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +35,20 @@ public class PostServiceImpl implements PostService {
         this.modelMapper = modelMapper;
     }
     @Override
-    public Post createPost(NewPostDTO newPostDTO){
+    public NewPostDTO createPost(NewPostDTO newPostDTO){
         Post newPost = new Post();
+
         newPost.setCreationDate(LocalDateTime.now());
-        newPost.setContent(newPost.getContent());
+        newPost.setContent(newPostDTO.getContent());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        UserDTO userDTO = userService.findByUsername(username);
-        newPost.setUser(modelMapper.map(userDTO,User.class));
-        postRepository.save(newPost);
-        return newPost;
+
+        User user = userService.findLoggedUser();
+        newPost.setUser(user);
+        newPost = postRepository.save(newPost);
+        newPostDTO.setId(newPost.getId());
+        newPostDTO.setUserDTO(modelMapper.map(user,UserDTO.class));
+        return newPostDTO;
+
     }
     @Override
     public List<NewPostDTO> findAll() {
@@ -70,10 +76,27 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public NewPostDTO deletePost(int id){
+    public List<NewPostDTO> findAllByUser(int id){
+        List<Post> posts = postRepository.findAllByUser(id);
+        List<NewPostDTO> newPostDTOS = new ArrayList<>();
+        for(Post post : posts){
+            if (post.getUser().getId() == id) {
+                NewPostDTO newPostDTO = modelMapper.map(post, NewPostDTO.class);
+                newPostDTO.setUserDTO(modelMapper.map(post.getUser(),UserDTO.class));
+                newPostDTOS.add(newPostDTO);
+            }
+        }
+        return newPostDTOS;
+    }
+    @Override
+    public NewPostDTO deletePost(int id)  {
+
         Optional<Post>post = postRepository.findById(id);
         if (!post.isPresent()){
             return null;
+        }
+        if (!post.get().getUser().getRole().equals("ADMIN") || userService.findLoggedUser().getId() != post.get().getUser().getId()){
+            throw new RuntimeException("Unauthorized");
         }
         post.get().setDeleted(true);
         postRepository.save(post.get());
@@ -83,6 +106,9 @@ public class PostServiceImpl implements PostService {
     }
     @Override
     public NewPostDTO updatePost(NewPostDTO newPostDTO) {
+        if (!newPostDTO.getUserDTO().getRole().equals("ADMIN") || userService.findLoggedUser().getId() != newPostDTO.getUserDTO().getId()){
+            throw new RuntimeException("Unauthorized");
+        }
         Optional<Post> postOptional = postRepository.findById(newPostDTO.getId());
         if (!postOptional.isPresent()) {
             return null;
@@ -95,6 +121,9 @@ public class PostServiceImpl implements PostService {
 
         return modelMapper.map(post, NewPostDTO.class);
     }
+
+
+
 
 
 

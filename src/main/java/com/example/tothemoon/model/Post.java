@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ public class Post {
     private Set<Image> images = new HashSet<>();
     @ManyToOne
     private User user;
+
     @Column(name = "deleted")
     private boolean isDeleted;
     @OneToMany(fetch = FetchType.LAZY)

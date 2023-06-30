@@ -23,8 +23,8 @@ public class NewPostDTO {
     private UserDTO userDTO;
     private String content;
     private Set<Image> images;
-    private LocalDateTime creationDate;
-    private Set<MultipartFile> files;
+    private String creationDate;
+
 
 
 }

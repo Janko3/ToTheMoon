@@ -16,4 +16,5 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private EUserType role;
+    private Integer id;
 }

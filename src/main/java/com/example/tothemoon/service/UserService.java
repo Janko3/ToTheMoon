@@ -12,5 +12,7 @@ public interface UserService {
     List<UserDTO> findAll();
     UserDTO findById(int id);
     User findUserByUsername(String username);
+    User findLoggedUser();
+
 
 }

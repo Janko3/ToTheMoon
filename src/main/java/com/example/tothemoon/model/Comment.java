@@ -28,15 +28,13 @@ public class Comment {
     private boolean isDeleted;
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Comment> replies = new HashSet<>();
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
     @ManyToOne
     private User user;
-    @JoinColumn(name = "post_id",referencedColumnName = "id")
     @ManyToOne
     private Post post;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy ="comment")
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Reaction> reactions = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY,mappedBy ="comment")
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Report> reports = new HashSet<>();
 
 }

@@ -8,6 +8,8 @@ import com.example.tothemoon.repository.UserRepository;
 import com.example.tothemoon.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -85,6 +87,12 @@ public class UserServiceImpl implements UserService {
             return user.get();
         }
         return null;
+    }
+    @Override
+    public User findLoggedUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return this.findUserByUsername(username);
     }
 
 }

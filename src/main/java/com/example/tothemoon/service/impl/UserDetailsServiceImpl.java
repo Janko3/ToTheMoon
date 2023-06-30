@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findUserByUsername(username);
         if(user == null){
-            throw new UsernameNotFoundException("No user with this email found ");
+            throw new UsernameNotFoundException("No user with this username found ");
         }else {
             List<GrantedAuthority>grantedAuthorities = new ArrayList<>();
             String role = "ROLE_" + user.getRole().toString();

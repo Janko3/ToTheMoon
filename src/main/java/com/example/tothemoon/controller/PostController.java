@@ -2,7 +2,9 @@ package com.example.tothemoon.controller;
 
 import com.example.tothemoon.model.Post;
 import com.example.tothemoon.model.dto.NewPostDTO;
+import com.example.tothemoon.model.dto.UserDTO;
 import com.example.tothemoon.service.PostService;
+import com.example.tothemoon.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,15 +19,17 @@ import java.util.List;
 @RequestMapping("api/posts")
 public class PostController {
     private PostService postService;
+    private UserService userService;
 
     @Autowired
-    public PostController(PostService postService){
+    public PostController(PostService postService,UserService userService){
         this.postService = postService;
+        this.userService = userService;
     }
 
     @PostMapping
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<Post>create(@RequestBody NewPostDTO newPostDTO){
+    public ResponseEntity<NewPostDTO>create(@RequestBody NewPostDTO newPostDTO){
         return new ResponseEntity<>(this.postService.createPost(newPostDTO), HttpStatus.OK);
     }
     @GetMapping
@@ -44,5 +48,16 @@ public class PostController {
     @DeleteMapping("/{id}")
     public ResponseEntity<NewPostDTO> delete(@PathVariable int id) {
         return new ResponseEntity<>(this.postService.deletePost(id), HttpStatus.OK);
+    }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<NewPostDTO>> findAllPostsByUser(@PathVariable Integer userId) {
+
+        List<NewPostDTO> postsByUser = postService.findAllByUser(userId);
+
+        if (postsByUser.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(postsByUser);
     }
 }
