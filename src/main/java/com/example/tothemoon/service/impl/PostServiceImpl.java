@@ -1,9 +1,11 @@
 package com.example.tothemoon.service.impl;
 
+import com.example.tothemoon.model.Image;
 import com.example.tothemoon.model.Post;
 import com.example.tothemoon.model.User;
 import com.example.tothemoon.model.dto.NewPostDTO;
 import com.example.tothemoon.model.dto.UserDTO;
+import com.example.tothemoon.model.enums.EUserType;
 import com.example.tothemoon.repository.PostRepository;
 import com.example.tothemoon.service.PostService;
 import com.example.tothemoon.service.UserService;
@@ -40,13 +42,11 @@ public class PostServiceImpl implements PostService {
 
         newPost.setCreationDate(LocalDateTime.now());
         newPost.setContent(newPostDTO.getContent());
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
         User user = userService.findLoggedUser();
         newPost.setUser(user);
         newPost = postRepository.save(newPost);
         newPostDTO.setId(newPost.getId());
-        newPostDTO.setUserDTO(modelMapper.map(user,UserDTO.class));
+        newPostDTO.setUser(modelMapper.map(user,UserDTO.class));
         return newPostDTO;
 
     }
@@ -82,7 +82,7 @@ public class PostServiceImpl implements PostService {
         for(Post post : posts){
             if (post.getUser().getId() == id) {
                 NewPostDTO newPostDTO = modelMapper.map(post, NewPostDTO.class);
-                newPostDTO.setUserDTO(modelMapper.map(post.getUser(),UserDTO.class));
+                newPostDTO.setUser(modelMapper.map(post.getUser(),UserDTO.class));
                 newPostDTOS.add(newPostDTO);
             }
         }
@@ -91,32 +91,27 @@ public class PostServiceImpl implements PostService {
     @Override
     public NewPostDTO deletePost(int id)  {
 
-        Optional<Post>post = postRepository.findById(id);
-        if (!post.isPresent()){
-            return null;
-        }
-        if (!post.get().getUser().getRole().equals("ADMIN") || userService.findLoggedUser().getId() != post.get().getUser().getId()){
+        Post post = postRepository.findFirstByIdWithCollections(id).orElseThrow(()->new RuntimeException());
+        System.out.println(userService.findLoggedUser().getId());
+        if (userService.findLoggedUser().getRole() != EUserType.ADMIN  || userService.findLoggedUser().getId() != post.getUser().getId()){
             throw new RuntimeException("Unauthorized");
         }
-        post.get().setDeleted(true);
-        postRepository.save(post.get());
-        Post postObject = post.get();
-        NewPostDTO newPostDTO = modelMapper.map(postObject,NewPostDTO.class);
+        post.setDeleted(true);
+        postRepository.save(post);
+        NewPostDTO newPostDTO = modelMapper.map(post,NewPostDTO.class);
+        for (Image image:
+            post.getImages() ) {
+            newPostDTO.getImages().add(image.getPath());
+        }
         return newPostDTO;
     }
     @Override
     public NewPostDTO updatePost(NewPostDTO newPostDTO) {
-        if (!newPostDTO.getUserDTO().getRole().equals("ADMIN") || userService.findLoggedUser().getId() != newPostDTO.getUserDTO().getId()){
+        Post post = postRepository.findFirstByIdWithCollections(newPostDTO.getId()).orElseThrow(()->new RuntimeException());
+        if (userService.findLoggedUser().getRole() != EUserType.ADMIN || userService.findLoggedUser().getId() != post.getUser().getId()){
             throw new RuntimeException("Unauthorized");
         }
-        Optional<Post> postOptional = postRepository.findById(newPostDTO.getId());
-        if (!postOptional.isPresent()) {
-            return null;
-        }
-
-        Post post = postOptional.get();
         post.setContent(newPostDTO.getContent());
-        post.setImages(newPostDTO.getImages());
         postRepository.save(post);
 
         return modelMapper.map(post, NewPostDTO.class);

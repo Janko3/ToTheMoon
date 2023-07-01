@@ -38,7 +38,6 @@ public class Post {
     private Set<Reaction> reactions = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Report> reports = new HashSet<>();
-    @JoinColumn(name = "group_id",referencedColumnName = "id")
     @ManyToOne
     private Group group;
 }

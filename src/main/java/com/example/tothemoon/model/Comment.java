@@ -22,6 +22,8 @@ public class Comment {
     private Integer id;
     @Column(name = "text",nullable = false)
     private String text;
+    @ManyToOne
+    private Comment owner;
     @Column(name = "timestamp",nullable = false)
     private LocalDate timestamp;
     @Column(name = "deleted",nullable = false)

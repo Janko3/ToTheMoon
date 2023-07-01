@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -20,9 +21,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class NewPostDTO {
     private Integer id;
-    private UserDTO userDTO;
+    private UserDTO user;
     private String content;
-    private Set<Image> images;
+    private Set<String> images = new HashSet<>();
     private String creationDate;
 
 
