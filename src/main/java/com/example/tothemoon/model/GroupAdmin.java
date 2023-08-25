@@ -21,6 +21,8 @@ public class GroupAdmin {
     private Integer id;
     @ManyToOne
     private User user;
+    @ManyToOne
+    private Group group;
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Banned> by = new HashSet<>();
 }

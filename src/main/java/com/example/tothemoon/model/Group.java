@@ -29,10 +29,14 @@ public class Group {
     private boolean isSuspended;
     @Column(name = "suspended_reason")
     private String suspendedReason;
+    @Column(name = "deleted")
+    private boolean isDeleted;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
     private Set<Post>posts = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY)
     private Set<GroupRequest>requests = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY)
     private Set<Banned>forGroup = new HashSet<>();
+    @OneToMany()
+    private Set<GroupAdmin> groupAdmins = new HashSet<>();
 }

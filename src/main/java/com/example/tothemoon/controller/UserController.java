@@ -77,5 +77,19 @@ public class UserController {
         System.out.println(user);
         return this.userService.findByUsername(user.getName());
     }
+    @PutMapping("/edit")
+    public ResponseEntity<UserDTO>update(@RequestBody UserDTO userDTO){
+        return new ResponseEntity<>(this.userService.updateUser(userDTO),HttpStatus.OK);
+    }
+    @PostMapping("/changePassword")
+    public ResponseEntity<String> changePassword(@RequestBody PassChangeDto passChangeDto,
+                                                 @RequestParam String newPassword) {
+        boolean passwordChanged = userService.changePassword(passChangeDto, newPassword);
+        if (passwordChanged) {
+            return ResponseEntity.ok("Password changed successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Incorrect current password.");
+        }
+    }
 
 }

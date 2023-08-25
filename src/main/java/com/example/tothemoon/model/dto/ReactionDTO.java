@@ -2,24 +2,24 @@ package com.example.tothemoon.model.dto;
 
 import com.example.tothemoon.model.Comment;
 import com.example.tothemoon.model.Post;
+import com.example.tothemoon.model.User;
+import com.example.tothemoon.model.enums.EReactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.criteria.CriteriaBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentDTO {
+public class ReactionDTO {
     private Integer id;
-    private String text;
-    private Integer ownerId;
-    private String timestamp;
+    private EReactionType reactionType;
     private UserDTO user;
-
-
+    private Integer commentId;
+    private Integer postId;
+    private String timestamp;
 }

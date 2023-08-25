@@ -1,6 +1,7 @@
 package com.example.tothemoon.service.impl;
 
 import com.example.tothemoon.model.User;
+import com.example.tothemoon.model.dto.PassChangeDto;
 import com.example.tothemoon.model.dto.RegisterDTO;
 import com.example.tothemoon.model.dto.UserDTO;
 import com.example.tothemoon.model.enums.EUserType;
@@ -93,6 +94,35 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         return this.findUserByUsername(username);
+    }
+    @Override
+    public UserDTO updateUser(UserDTO userDTO){
+        User user = this.findLoggedUser();
+      //  user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        userRepository.save(user);
+        return modelMapper.map(user,UserDTO.class);
+    }
+   @Override
+    public boolean isTruePassword(int id,String password){
+        UserDTO userDTO = findById(id);
+        User user = modelMapper.map(userDTO,User.class);
+        boolean check = passwordEncoder.matches(password,user.getPassword());
+        return check;
+    }
+    @Override
+    public boolean changePassword(PassChangeDto passChangeDto, String newPassword){
+        int id = findLoggedUser().getId();
+        String password = passChangeDto.getPassword();
+
+        boolean checkPass = isTruePassword(id,password);
+        if(checkPass){
+            userRepository.changeUserPassword(passwordEncoder.encode(newPassword));
+            return  true;
+        }
+        return false;
     }
 
 }

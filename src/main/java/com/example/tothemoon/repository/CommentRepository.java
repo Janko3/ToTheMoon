@@ -11,11 +11,13 @@ import java.util.List;
 @Component
 @Repository
 public interface CommentRepository extends JpaRepository<Comment,Integer> {
-    @Query("select distinct c from Comment c where c.owner is null and c.post.id= ?1")
+    @Query("select c from Comment c where c.owner is null and c.post.id= ?1")
     List<Comment> findAllCommentsWithoutOwnerPostId(int id);
 
-    @Query("SELECT c, COUNT(c) FROM Comment c WHERE c.owner IS NOT NULL GROUP BY c")
-    List<Comment> findCommentsAndCountWithOwner();
+    @Query("SELECT c.owner.id, COUNT(c) FROM Comment c WHERE c.owner in ?2 and c.post.id = ?1 GROUP BY c.owner.id")
+    List<Comment> findCommentsAndCountWithOwner(int postId,int[] ownerId);
+
+
 
 
 

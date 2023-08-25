@@ -65,7 +65,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public NewPostDTO findById(int id) {
-        Optional<Post> post = postRepository.findById(id);
+        Optional<Post> post = postRepository.findFirstByIdWithCollections(id);
         if (!post.isPresent()) {
             return null;
         }
@@ -92,8 +92,7 @@ public class PostServiceImpl implements PostService {
     public NewPostDTO deletePost(int id)  {
 
         Post post = postRepository.findFirstByIdWithCollections(id).orElseThrow(()->new RuntimeException());
-        System.out.println(userService.findLoggedUser().getId());
-        if (userService.findLoggedUser().getRole() != EUserType.ADMIN  || userService.findLoggedUser().getId() != post.getUser().getId()){
+        if (userService.findLoggedUser().getRole() != EUserType.ADMIN  && userService.findLoggedUser().getId() != post.getUser().getId()){
             throw new RuntimeException("Unauthorized");
         }
         post.setDeleted(true);
@@ -108,10 +107,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public NewPostDTO updatePost(NewPostDTO newPostDTO) {
         Post post = postRepository.findFirstByIdWithCollections(newPostDTO.getId()).orElseThrow(()->new RuntimeException());
-        if (userService.findLoggedUser().getRole() != EUserType.ADMIN || userService.findLoggedUser().getId() != post.getUser().getId()){
+        if (userService.findLoggedUser().getRole() != EUserType.ADMIN && userService.findLoggedUser().getId() != post.getUser().getId()){
             throw new RuntimeException("Unauthorized");
         }
         post.setContent(newPostDTO.getContent());
+        post.setCreationDate(LocalDateTime.now());
         postRepository.save(post);
 
         return modelMapper.map(post, NewPostDTO.class);

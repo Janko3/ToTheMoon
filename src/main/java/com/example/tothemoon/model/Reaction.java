@@ -13,14 +13,14 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @Table(name = "reaction")
-public class Reaction {
+public class   Reaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
     @Column(name = "type",nullable = false)
     @Enumerated(EnumType.STRING)
-    private EReactionType type;
+    private EReactionType reactionType;
     @Column(name = "timestamp")
     private LocalDate timestamp;
     @Column(name = "deleted")
